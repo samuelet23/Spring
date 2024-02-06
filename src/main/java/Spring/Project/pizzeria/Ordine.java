@@ -18,17 +18,13 @@ public class Ordine {
 
     private StatoOrdine statoOrdine;
 
-    private int numeroOrdine= generaNumero();
+    private int numeroOrdine;
     private int numeroCoperti;
 
     private LocalDate oraAcquisione;
     private double importoTotale;
 
-    private double costoCoperto;
 
-//    public Ordine( ){
-//
-//    }
 
     public double calcolaOrdine(double costoCoperto){
        double sommaMenu =
@@ -39,15 +35,6 @@ public class Ordine {
         return sommaMenu + (numeroCoperti * costoCoperto);
     }
 
-
-    private static int generaNumero(){
-        int numero = 0;
-        for (int i = 0; i < 100; i++) {
-            numero = i++;
-        }
-        return numero;
-
-    }
     @Override
     public String toString() {
         return "Ordine{" +
@@ -56,7 +43,6 @@ public class Ordine {
                 ", numeroCoperti=" + numeroCoperti +
                 ", oraAcquisione=" + oraAcquisione +
                 ", importoTotale=" + importoTotale +
-                ", costoCoperto=" + costoCoperto +
                 '}';
     }
 }

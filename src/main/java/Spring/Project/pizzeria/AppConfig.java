@@ -69,18 +69,35 @@ public class AppConfig {
 
     @Bean("ordine")
     public Ordine ordine(){
+    return generaOrdine(List.of(margherita(), montagna(), coca(), prosciutto()));
+    }
+
+    @Bean("tavolo")
+    public Tavolo tavolo(){
+       return generateTavolo();
+    }
+
+
+
+    private Ordine generaOrdine(List<Item> items){
+        //costo coperto da estratte dall'application.properties@Value("${pizzeria.costoCoperto}") String costoCoperto
         Ordine ordine = new Ordine();
-        ordine.setNumeroCoperti(4);
-        ordine.setElementiMenu(List.of(margherita(), montagna(), acqua(), coca(), prosciutto()));
+        ordine.setNumeroCoperti(tavolo().getNumeroCopertiMassimo());
+        ordine.setNumeroOrdine(generaNumero());
+        ordine.setElementiMenu(items);
         ordine.setOraAcquisione(LocalDate.now());
         ordine.setStatoOrdine(StatoOrdine.IN_CORSO);
         ordine.setImportoTotale(ordine.calcolaOrdine(2));
         return ordine;
     }
 
-
-
-
+    private Tavolo generateTavolo(){
+        Tavolo tavolo = new Tavolo();
+        tavolo.setNumeroTavolo(generaNumero());
+        tavolo.setStato(StatoTavolo.LIBERO);
+        tavolo.setNumeroCopertiMassimo(4);
+        return tavolo;
+    }
     private Drinks generateDrinks(String nome, double informazioni, double prezzo){
         Drinks drinks = new Drinks();
         drinks.setNome(nome);
@@ -104,5 +121,11 @@ public class AppConfig {
         return toppings;
     }
 
-
+    private static int generaNumero() {
+        int numero = 0;
+        for (int i = 0; i < 100; i++) {
+            numero = i;
+        }
+        return numero;
+    }
 }

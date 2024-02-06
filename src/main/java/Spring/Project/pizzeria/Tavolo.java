@@ -13,4 +13,5 @@ public class Tavolo {
     private StatoTavolo stato;
 
 
+
 }

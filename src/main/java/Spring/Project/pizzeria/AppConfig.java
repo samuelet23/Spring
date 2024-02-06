@@ -1,10 +1,12 @@
 package Spring.Project.pizzeria;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.awt.image.PixelGrabber;
+import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
@@ -65,6 +67,16 @@ public class AppConfig {
         return menu;
     }
 
+    @Bean("ordine")
+    public Ordine ordine(){
+        Ordine ordine = new Ordine();
+        ordine.setNumeroCoperti(4);
+        ordine.setElementiMenu(List.of(margherita(), montagna(), acqua(), coca(), prosciutto()));
+        ordine.setOraAcquisione(LocalDate.now());
+        ordine.setStatoOrdine(StatoOrdine.IN_CORSO);
+        ordine.setImportoTotale(ordine.calcolaOrdine(2));
+        return ordine;
+    }
 
 
 

@@ -18,18 +18,30 @@ public class Runner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(PizzeriaApplication.class);
-        Tavolo tavolo1 = new Tavolo();
         System.out.println("Menu Pizzeria");
         Menu menu = ctx.getBean("menu", Menu.class);
 //        menu.stampaMenu();
 
+        Ordine ordine1 = ctx.getBean("ordine", Ordine.class);
+        Tavolo tavolo1 = ctx.getBean("tavolo", Tavolo.class);
 
         try{
-        Ordine ordine1 = ctx.getBean("ordine", Ordine.class);
         infoLogger.info(String.valueOf(ordine1));
+        tavolo1.setStato(StatoTavolo.OCCUPATO);
         }catch (Exception e){
             errorLogger.error(e.getMessage());
         }
+
+            ordine1.setStatoOrdine(StatoOrdine.PRONTO);
+            infoLogger.info("L'ordine è pronto");
+
+            ordine1.setStatoOrdine(StatoOrdine.SERVITO);
+            infoLogger.info("L'ordine è stato servito");
+
+            tavolo1.setStato(StatoTavolo.LIBERO);
+            infoLogger.info("IL tavolo è libero");
+
+
     }
 
 

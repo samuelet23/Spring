@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import java.awt.image.PixelGrabber;
 import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
+@PropertySource("application.properties")
 public class AppConfig {
 
     @Bean("prosciutto")
@@ -54,7 +56,7 @@ public class AppConfig {
 
     @Bean("CocaCola")
     public Drinks coca(){
-        return generateDrinks("CocaCola", 20.3, 3.5);
+        return generateDrinks("CocaCola", 20.0, 3.5);
     }
 
 
@@ -68,8 +70,16 @@ public class AppConfig {
     }
 
     @Bean("ordine")
-    public Ordine ordine(){
-    return generaOrdine(List.of(margherita(), montagna(), coca(), prosciutto()));
+    public Ordine ordine(@Value("${ordine.costoCoperto}") String costoCoperto){
+        Ordine ordine = new Ordine(tavolo());
+        ordine.setNumeroCoperti(4);
+        ordine.setNumeroOrdine(generaNumero());
+        ordine.setElementiMenu(List.of(margherita(), montagna(), coca(), prosciutto()));
+        ordine.setOraAcquisione(LocalDate.now());
+        ordine.setStatoOrdine(StatoOrdine.IN_CORSO);
+        double coperto = Double.parseDouble(costoCoperto);
+        ordine.setImportoTotale(ordine.calcolaOrdine(coperto));
+        return ordine;
     }
 
     @Bean("tavolo")
@@ -77,19 +87,6 @@ public class AppConfig {
        return generateTavolo();
     }
 
-
-
-    private Ordine generaOrdine(List<Item> items){
-        //costo coperto da estratte dall'application.properties@Value("${pizzeria.costoCoperto}") String costoCoperto
-        Ordine ordine = new Ordine();
-        ordine.setNumeroCoperti(tavolo().getNumeroCopertiMassimo());
-        ordine.setNumeroOrdine(generaNumero());
-        ordine.setElementiMenu(items);
-        ordine.setOraAcquisione(LocalDate.now());
-        ordine.setStatoOrdine(StatoOrdine.IN_CORSO);
-        ordine.setImportoTotale(ordine.calcolaOrdine(2));
-        return ordine;
-    }
 
     private Tavolo generateTavolo(){
         Tavolo tavolo = new Tavolo();
@@ -123,9 +120,7 @@ public class AppConfig {
 
     private static int generaNumero() {
         int numero = 0;
-        for (int i = 0; i < 100; i++) {
-            numero = i;
-        }
-        return numero;
+        numero++;
+        return  numero;
     }
 }

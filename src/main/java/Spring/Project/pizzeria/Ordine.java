@@ -25,6 +25,13 @@ public class Ordine {
     private double importoTotale;
 
 
+    public Ordine(Tavolo tavolo){
+        if (numeroCoperti <= tavolo.getNumeroCopertiMassimo()) {
+            numeroCoperti = getNumeroCoperti();
+        }else {
+            System.out.println("errore: i coperti sono superiore al numero massimo presente nel tavolo");
+        }
+    }
 
     public double calcolaOrdine(double costoCoperto){
        double sommaMenu =
